@@ -1,7 +1,6 @@
 #include <iostream>
 #include "Ship.h"
 #include "Grid.h"
-#include "Player.h"
 
 class Player
 {
