@@ -4,7 +4,7 @@ class Grid
 {
 private:
     char cells[10][10];
-
+    // empty: '~' ship: 'S' hit: 'X' miss: 'M'
 public:
     Grid();
     bool isTileOccupied(int row, int col) const;
