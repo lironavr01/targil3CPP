@@ -13,3 +13,13 @@ bool Ship::isSunk() const
 {
     return hitTaken >= size;
 }
+
+Carrier::Carrier() : Ship("Carrier", 5) {}
+
+BattleShip::BattleShip() : Ship("BattleShip", 4) {}
+
+Cruiser::Cruiser() : Ship("Cruiser", 3) {}
+
+Submarine::Submarine() : Ship("Submarine", 3) {}
+
+Destroyer::Destroyer() : Ship("Destoryer", 2) {}
