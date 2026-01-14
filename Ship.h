@@ -9,39 +9,41 @@ protected:
 public:
     Ship(const std::string shipName, int shipSize);
     virtual ~Ship();
+    int getSize();
+    std::string getName();
     virtual void takeHit();
     bool isSunk() const;
 };
 
-class Carrier : Ship
+class Carrier : public Ship
 {
 public:
     Carrier();
     ~Carrier();
 };
 
-class BattleShip : Ship
+class BattleShip : public Ship
 {
 public:
     BattleShip();
     ~BattleShip();
 };
 
-class Cruiser : Ship
+class Cruiser : public Ship
 {
 public:
     Cruiser();
     ~Cruiser();
 };
 
-class Submarine : Ship
+class Submarine : public Ship
 {
 public:
     Submarine();
     ~Submarine();
 };
 
-class Destroyer : Ship
+class Destroyer : public Ship
 {
 public:
     Destroyer();
