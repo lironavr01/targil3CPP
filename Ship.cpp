@@ -1,10 +1,7 @@
 #include "Ship.h"
 #include "string"
 Ship::Ship(const std::string shipName, int shipSize) : name(shipName), size(shipSize), hitTaken(0) {}
-Ship::~Ship()
-{
-    delete name;
-}
+Ship::~Ship() {}
 void Ship::takeHit()
 {
     hitTaken++;

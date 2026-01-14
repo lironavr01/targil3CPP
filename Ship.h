@@ -2,7 +2,7 @@
 class Ship
 {
 protected:
-    std::string *name;
+    std::string name;
     int size;
     int hitTaken;
 

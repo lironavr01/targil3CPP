@@ -5,12 +5,12 @@
 class Player
 {
 private:
-    std::string *playerName;
+    std::string playerName;
     Ship *ships[5];
     Grid grid;
 
 public:
-    Player();
+    Player(const std::string name);
     virtual ~Player();
     virtual void placeAllShips();
     virtual void makeMove(Player *opponent);
