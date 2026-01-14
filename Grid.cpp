@@ -22,50 +22,49 @@ bool Grid::isBounds(int row, int col) const
     bool isCol = (col > 0) || (col < 10);
     return row && col;
 }
-void Grid::placeShip(int row, int col, int shipSize, bool horizontal, char symbol)
+
+bool Grid::canPlace(int row, int col, int shipSize, bool horizontal)
 {
     if (horizontal)
     {
-        int i = col;
-        for (; i < shipSize; i++)
+        for (int i = col; i < shipSize; i++)
         {
-            if (cells[row][i] != '~' || !isBounds(row, i))
-            {
-                std::cout << "cant place ship there!" << std::endl;
-                break;
-            }
-            cells[row][i] = symbol;
+            if (cells[row][i] = !'~' || !isBounds(row, i))
+                return false;
         }
-        if (col - i - 1 != shipSize)
-        {
-            for (int j = i; i != col; i--)
-            {
-                cells[row][j] = '~';
-            }
-            return;
-        }
+        return true;
     }
     else // horizontal == false
     {
-        int i = row;
-        for (; i < shipSize; i++)
+        for (int i = row; i < shipSize; i++)
         {
-            if (cells[i][col] != '~' || !isBounds(i, col))
-            {
-                std::cout << "cant place ship there!" << std::endl;
-                break;
-            }
-            cells[i][col] = symbol;
+            if (cells[i][col] = !'~' || !isBounds(i, col))
+                return false;
         }
-        if (row - i - 1 != shipSize)
+        return true;
+    }
+}
+
+void Grid::placeShip(int row, int col, int shipSize, bool horizontal, char symbol)
+{
+    if (canPlace(row, col, shipSize, horizontal))
+    {
+        if (horizontal)
         {
-            for (int j = i; i != row; j--)
+            for (int i = col; i < shipSize; i++)
             {
-                cells[j][col] = '~';
+                cells[row][i] = symbol;
             }
-            return;
+        }
+        else // horizontal == false
+        {
+            for (int i = row; i < shipSize; i++)
+            {
+                cells[i][col] = symbol;
+            }
         }
     }
+    std::cout << "cant place ship there!" << std::endl;
 }
 
 void Grid::markHit(int row, int col)
@@ -85,6 +84,15 @@ char Grid::getCell(int row, int col) const
     return cells[row][col];
 }
 
-void printGrid() // TODO
+void Grid::printGrid()
 {
+    for (int i = 0; i < 10; i++)
+    {
+        std::cout << "| ";
+        for (int j = 0; j < 10; j++)
+        {
+            std::cout << cells[i][j] << " | ";
+        }
+        std::cout << std::endl;
+    }
 }

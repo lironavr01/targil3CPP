@@ -14,5 +14,6 @@ public:
     void markHit(int row, int col);  // X
     void markMiss(int row, int col); // M
     char getCell(int row, int col) const;
+    bool canPlace(int row, int col, int shipSize, bool horizontal);
     void printGrid();
 };
