@@ -12,11 +12,13 @@ Player::Player(const std::string &name)
 
 Player::~Player()
 {
-    delete[] ships;
+    for (int i = 0; i < 5; i++)
+    {
+        delete ships[i];
+    }
 }
 
 void Player::placeAllShips() {}
-
 void Player::makeMove(Player *opponent) {}
 
 bool Player::allShipsSunk() const
@@ -31,8 +33,15 @@ bool Player::allShipsSunk() const
 
 void Player::displayGrid()
 {
-    grid.printGrid();
+    grid.printSelfGrid();
 }
+
+Grid &Player::getGrid()
+{
+    return grid;
+}
+
+// ---------------- HumanPlayer ----------------
 
 HumanPlayer::HumanPlayer(const std::string &name) : Player(name) {}
 HumanPlayer::~HumanPlayer() {}
@@ -45,28 +54,74 @@ void HumanPlayer::placeAllShips()
         bool horizontal;
         char tmpAns;
         int shipSize = ships[i]->getSize();
-        do
+
+        bool placed = false;
+
+        while (!placed)
         {
-            std::cout << "Where do you want to place the " << ships[i]->getName() << "  (input: row col): " << std::endl;
-            std::cin >> newRow >> newCol;
-            std::cout << "Place horizontal? (answer y/n): " << std::endl;
+            std::cout << "Where do you want to place the " << ships[i]->getName()
+                      << " (size " << shipSize << ")? (input: row col): " << std::endl;
+
+            if (!(std::cin >> newRow >> newCol))
+            {
+                std::cin.clear();
+                std::cin.ignore(10000, '\n');
+                std::cout << "Invalid input. Please enter numbers." << std::endl;
+                continue;
+            }
+
+            std::cout << "Place horizontal? (y/n): " << std::endl;
             std::cin >> tmpAns;
-            horizontal = tmpAns == 'y' ? true : false;
-            grid.placeShip(newRow, newCol, shipSize, horizontal, 'S');
-        } while (grid.canPlace(newRow, newCol, shipSize, horizontal));
+            horizontal = (tmpAns == 'y' || tmpAns == 'Y');
+
+            if (grid.placeShip(newRow, newCol, shipSize, horizontal, 'S'))
+            {
+                placed = true;
+                std::cout << "Placed successfully!" << std::endl;
+                grid.printSelfGrid();
+            }
+            else
+            {
+                std::cout << "Invalid placement! Out of bounds or overlapping. Try again." << std::endl;
+            }
+        }
     }
 }
 
-Grid Player::getGrid()
-{
-    return grid;
-}
-
-void HumanPlayer::makeMove(Player *opponent) // TODO : verify good input
+void HumanPlayer::makeMove(Player *opponent)
 {
     int row, col;
-    std::cout << "Choose row and col to attack (input: row col): " << std::endl;
-    std::cin >> row >> col;
+    bool validMove = false;
+
+    while (!validMove)
+    {
+        std::cout << "Choose row and col to attack (input: row col): " << std::endl;
+        if (!(std::cin >> row >> col))
+        {
+            std::cin.clear();
+            std::cin.ignore(10000, '\n');
+            std::cout << "Invalid input. Try again." << std::endl;
+            continue;
+        }
+
+        if (row < 0 || row >= 10 || col < 0 || col >= 10)
+        {
+            std::cout << "Out of bounds! Try again." << std::endl;
+            continue;
+        }
+
+        char currentCell = opponent->getGrid().getCell(row, col);
+
+        if (currentCell == 'X' || currentCell == 'M')
+        {
+            std::cout << "You already attacked this spot! Choose another." << std::endl;
+        }
+        else
+        {
+            validMove = true;
+        }
+    }
+
     char posSign = opponent->getGrid().getCell(row, col);
     if (posSign == 'S')
     {
@@ -80,6 +135,11 @@ void HumanPlayer::makeMove(Player *opponent) // TODO : verify good input
     }
 }
 
+// ---------------- AiPlayer ----------------
+
+AiPlayer::AiPlayer(const std::string &name) : Player(name) {}
+AiPlayer::~AiPlayer() {}
+
 int AiPlayer::getRandomCoordinate()
 {
     return std::rand() % 10;
@@ -90,23 +150,45 @@ void AiPlayer::placeAllShips()
     for (int i = 0; i < 5; i++)
     {
         int row, col;
-        bool horizontal = false;
+        bool horizontal;
         int shipSize = ships[i]->getSize();
-        do
+
+        bool placed = false;
+
+        while (!placed)
         {
             row = getRandomCoordinate();
             col = getRandomCoordinate();
-            horizontal = !horizontal;
-            grid.placeShip(row, col, shipSize, horizontal, 'S');
-        } while (grid.canPlace(row, col, shipSize, horizontal));
+            horizontal = std::rand() % 2;
+
+            if (grid.placeShip(row, col, shipSize, horizontal, 'S'))
+            {
+                placed = true;
+            }
+        }
     }
+    std::cout << "AI has placed all ships." << std::endl;
 }
 
 void AiPlayer::makeMove(Player *opponent)
 {
     int row, col;
-    row = getRandomCoordinate();
-    col = getRandomCoordinate();
+    bool validMove = false;
+
+    while (!validMove)
+    {
+        row = getRandomCoordinate();
+        col = getRandomCoordinate();
+
+        char cell = opponent->getGrid().getCell(row, col);
+        if (cell != 'X' && cell != 'M')
+        {
+            validMove = true;
+        }
+    }
+
+    std::cout << "AI attacks " << row << " " << col << std::endl;
+
     char posSign = opponent->getGrid().getCell(row, col);
     if (posSign == 'S')
     {
@@ -116,6 +198,6 @@ void AiPlayer::makeMove(Player *opponent)
     else if (posSign == '~')
     {
         opponent->getGrid().markMiss(row, col);
-        std::cout << "Opp missed You!" << std::endl;
+        std::cout << "AI missed!" << std::endl;
     }
 }

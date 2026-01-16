@@ -25,3 +25,9 @@ Cruiser::Cruiser() : Ship("Cruiser", 3) {}
 Submarine::Submarine() : Ship("Submarine", 3) {}
 
 Destroyer::Destroyer() : Ship("Destoryer", 2) {}
+
+Carrier::~Carrier() {}
+BattleShip::~BattleShip() {}
+Cruiser::~Cruiser() {}
+Submarine::~Submarine() {}
+Destroyer::~Destroyer() {}

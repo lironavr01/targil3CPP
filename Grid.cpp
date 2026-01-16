@@ -18,53 +18,54 @@ bool Grid::isTileOccupied(int row, int col) const
 
 bool Grid::isBounds(int row, int col) const
 {
-    bool isRow = (row > 0) || (row < 10);
-    bool isCol = (col > 0) || (col < 10);
-    return row && col;
+    return (row >= 0 && row < 10) && (col >= 0 && col < 10);
 }
 
 bool Grid::canPlace(int row, int col, int shipSize, bool horizontal)
 {
     if (horizontal)
     {
-        for (int i = col; i < shipSize; i++)
+        for (int i = col; i < col + shipSize; i++)
         {
-            if (cells[row][i] = !'~' || !isBounds(row, i))
+            if (cells[row][i] != '~' || !isBounds(row, i))
                 return false;
         }
         return true;
     }
     else // horizontal == false
     {
-        for (int i = row; i < shipSize; i++)
+        for (int i = row; i < row + shipSize; i++)
         {
-            if (cells[i][col] = !'~' || !isBounds(i, col))
+            if (cells[i][col] != '~' || !isBounds(i, col))
                 return false;
         }
         return true;
     }
 }
 
-void Grid::placeShip(int row, int col, int shipSize, bool horizontal, char symbol)
+// שנה את הסוג ל-bool
+bool Grid::placeShip(int row, int col, int shipSize, bool horizontal, char symbol)
 {
     if (canPlace(row, col, shipSize, horizontal))
     {
         if (horizontal)
         {
-            for (int i = col; i < shipSize; i++)
+            for (int i = col; i < col + shipSize; i++) // שים לב לתיקון הלולאה
             {
                 cells[row][i] = symbol;
             }
         }
-        else // horizontal == false
+        else // vertical
         {
-            for (int i = row; i < shipSize; i++)
+            for (int i = row; i < row + shipSize; i++) // שים לב לתיקון הלולאה
             {
                 cells[i][col] = symbol;
             }
         }
+        return true; // ההצבה הצליחה!
     }
-    std::cout << "cant place ship there!" << std::endl; // also prints when ai random
+
+    return false; // ההצבה נכשלה (ואל תדפיס כאן כלום)
 }
 
 void Grid::markHit(int row, int col)

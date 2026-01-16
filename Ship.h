@@ -7,7 +7,7 @@ protected:
     int hitTaken;
 
 public:
-    Ship(const std::string shipName, int shipSize);
+    Ship(const std::string &shipName, int shipSize);
     virtual ~Ship();
     int getSize();
     std::string getName();
