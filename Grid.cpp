@@ -64,7 +64,7 @@ void Grid::placeShip(int row, int col, int shipSize, bool horizontal, char symbo
             }
         }
     }
-    std::cout << "cant place ship there!" << std::endl;
+    std::cout << "cant place ship there!" << std::endl; // also prints when ai random
 }
 
 void Grid::markHit(int row, int col)
@@ -84,7 +84,7 @@ char Grid::getCell(int row, int col) const
     return cells[row][col];
 }
 
-void Grid::printGrid()
+void Grid::printSelfGrid()
 {
     for (int i = 0; i < 10; i++)
     {
@@ -92,6 +92,22 @@ void Grid::printGrid()
         for (int j = 0; j < 10; j++)
         {
             std::cout << cells[i][j] << " | ";
+        }
+        std::cout << std::endl;
+    }
+}
+
+void Grid::printAiGrid()
+{
+    for (int i = 0; i < 10; i++)
+    {
+        std::cout << "| ";
+        for (int j = 0; j < 10; j++)
+        {
+            if (cells[i][j] == 'S') // make sure dont print the ships of opp
+                std::cout << '~' << " | ";
+            else
+                std::cout << cells[i][j] << " | ";
         }
         std::cout << std::endl;
     }

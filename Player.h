@@ -14,6 +14,7 @@ public:
     virtual ~Player();
     virtual void placeAllShips();
     virtual void makeMove(Player *opponent);
+    virtual Grid getGrid();
     bool allShipsSunk() const;
     void displayGrid();
 };
@@ -34,4 +35,5 @@ public:
     ~AiPlayer();
     void placeAllShips() override;
     void makeMove(Player *opponent) override;
-}
+    int AiPlayer::getRandomCoordinate();
+};

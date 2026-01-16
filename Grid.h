@@ -15,5 +15,6 @@ public:
     void markMiss(int row, int col); // M
     char getCell(int row, int col) const;
     bool canPlace(int row, int col, int shipSize, bool horizontal);
-    void printGrid();
+    void printSelfGrid();
+    void printAiGrid();
 };
