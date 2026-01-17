@@ -5,12 +5,17 @@ protected:
     std::string name;
     int size;
     int hitTaken;
+    int startRow;
+    int startCol;
+    bool isHorizontal;
 
 public:
     Ship(const std::string &shipName, int shipSize);
     virtual ~Ship();
     int getSize();
     std::string getName();
+    void setPos(int row, int col, bool horizontal);
+    bool isOnCoordinate(int r, int c);
     virtual void takeHit();
     bool isSunk() const;
 };

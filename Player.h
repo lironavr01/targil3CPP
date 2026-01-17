@@ -15,8 +15,10 @@ public:
     virtual void placeAllShips();
     virtual void makeMove(Player *opponent);
     virtual Grid &getGrid();
+    virtual std::string getName();
     bool allShipsSunk() const;
     void displayGrid();
+    void checkShipHit(int row, int col);
 };
 
 class HumanPlayer : public Player

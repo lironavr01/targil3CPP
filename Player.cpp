@@ -21,6 +21,11 @@ Player::~Player()
 void Player::placeAllShips() {}
 void Player::makeMove(Player *opponent) {}
 
+std::string Player::getName()
+{
+    return playerName;
+}
+
 bool Player::allShipsSunk() const
 {
     for (int i = 0; i < 5; i++)
@@ -39,6 +44,18 @@ void Player::displayGrid()
 Grid &Player::getGrid()
 {
     return grid;
+}
+
+void Player::checkShipHit(int row, int col)
+{
+    for (int i = 0; i < 5; i++)
+    {
+        if (ships[i]->isOnCoordinate(row, col))
+        {
+            ships[i]->takeHit();
+            return;
+        }
+    }
 }
 
 // ---------------- HumanPlayer ----------------
@@ -77,6 +94,7 @@ void HumanPlayer::placeAllShips()
             if (grid.placeShip(newRow, newCol, shipSize, horizontal, 'S'))
             {
                 placed = true;
+                ships[i]->setPos(newRow, newCol, horizontal);
                 std::cout << "Placed successfully!" << std::endl;
                 grid.printSelfGrid();
             }
@@ -126,6 +144,7 @@ void HumanPlayer::makeMove(Player *opponent)
     if (posSign == 'S')
     {
         opponent->getGrid().markHit(row, col);
+        opponent->checkShipHit(row, col);
         std::cout << "You hit a ship!" << std::endl;
     }
     else if (posSign == '~')
@@ -164,6 +183,7 @@ void AiPlayer::placeAllShips()
             if (grid.placeShip(row, col, shipSize, horizontal, 'S'))
             {
                 placed = true;
+                ships[i]->setPos(row, col, horizontal);
             }
         }
     }
@@ -184,6 +204,7 @@ void AiPlayer::makeMove(Player *opponent)
         if (cell != 'X' && cell != 'M')
         {
             validMove = true;
+            opponent->checkShipHit(row, col);
         }
     }
 

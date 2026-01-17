@@ -62,10 +62,10 @@ bool Grid::placeShip(int row, int col, int shipSize, bool horizontal, char symbo
                 cells[i][col] = symbol;
             }
         }
-        return true; // ההצבה הצליחה!
+        return true;
     }
 
-    return false; // ההצבה נכשלה (ואל תדפיס כאן כלום)
+    return false;
 }
 
 void Grid::markHit(int row, int col)
