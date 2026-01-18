@@ -1,3 +1,5 @@
+// name: liron avramov
+// ID: 322875287
 #include "Player.h"
 
 Player::Player(const std::string &name)

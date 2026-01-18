@@ -1,3 +1,6 @@
+// name: liron avramov
+// ID: 322875287
+
 #include <iostream>
 #include "Ship.h"
 #include "Grid.h"

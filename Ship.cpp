@@ -1,3 +1,5 @@
+// name: liron avramov
+// ID: 322875287
 #include "Ship.h"
 #include "string"
 Ship::Ship(const std::string &shipName, int shipSize) : name(shipName), size(shipSize), hitTaken(0) {}

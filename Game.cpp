@@ -1,3 +1,6 @@
+// name: liron avramov
+// ID: 322875287
+
 #include "Game.h"
 
 Game::Game(Player *player1, Player *player2) : player1(player1), player2(player2) {}
